@@ -1,0 +1,134 @@
+
+<div class="modal" tabindex="-1" style="display: block;">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Form {{(user.id > 0)? 'Update' : 'Create'}} </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onOpenClose()"></button>
+      </div>
+      <div class="modal-body">
+          <form (ngSubmit)="onSubmit(userForm)" class="d-flex flex-column gap-3" #userForm="ngForm">
+          
+              <div>
+                  <input 
+                  placeholder="name"
+                  name="name"
+                  [(ngModel)]="user.name"
+                  class="form-control"
+                  required
+                  #name="ngModel"
+                  >
+                  @if (name.invalid && (name.dirty || name.touched)) {
+                      @if (name.hasError('required')) {
+                          <div class="text-danger my-2">
+                              Name is required
+                          </div>
+                      }
+          
+                  }
+              </div>
+              <div>
+                  <input 
+                  placeholder="lastname"
+                  name="lastname"
+                  [(ngModel)]="user.lastname"
+                  class="form-control"
+                  required
+                  #lastname="ngModel"
+                  >
+                  @if (lastname.invalid && (lastname.dirty || lastname.touched)) {
+                      @if (lastname.hasError('required')) {
+                          <div class="text-danger my-2">
+                              Lastname is required
+                          </div>
+                      }
+          
+                  }
+              </div>
+              <div>
+                  <input 
+                  type="email"
+                  placeholder="email"
+                  name="email"
+                  [(ngModel)]="user.email"
+                  class="form-control"
+                  required
+                  email
+                  #email="ngModel"
+                  >
+                  @if (email.invalid && (email.dirty || email.touched)) {
+                      @if (email.hasError('required')) {
+                          <div class="text-danger my-2">
+                              Email is required
+                          </div>
+                      }
+                      @if (email.hasError('email')) {
+                          <div class="text-danger my-2">
+                              Bad format!
+                          </div>
+                      }
+          
+                  }
+              </div>
+              <div>
+                  <input 
+                  placeholder="username"
+                  name="username"
+                  [(ngModel)]="user.username"
+                  class="form-control"
+                  required
+                  #username="ngModel"
+                  >
+                  @if (username.invalid && (username.dirty || username.touched)) {
+                      @if (username.hasError('required')) {
+                          <div class="text-danger my-2">
+                              Username is required
+                          </div>
+                      }
+          
+                  }
+              </div>
+              <div>
+                  <input 
+                  type="password"
+                  placeholder="password"
+                  name="password"
+                  [(ngModel)]="user.password"
+                  class="form-control"
+                  required
+                  minlength="6"
+                  #password="ngModel"
+                  >
+                  @if (password.invalid && (password.dirty || password.touched)) {
+                      @if (password.hasError('required')) {
+                          <div class="text-danger my-2">
+                              Password is required
+                          </div>
+                      }
+                      @if (password.hasError('minlength')) {
+                          <div class="text-danger my-2">
+                              6 characters at least!
+                          </div>
+                      }
+          
+                  }
+              </div>
+              <div>
+                  <button 
+                  type="submit"
+                  class="btn btn-primary my-2"
+                  [disabled]="userForm.invalid"> {{user.id > 0 ? 'Update' : 'Create'}} </button>
+                  <button type="button" class="btn btn-secondary m-2" (click)="onClear(userForm)">Clean</button>
+              </div>
+          
+          </form>
+        <p>Modal body text goes here.</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onOpenClose()">Close</button>
+    </div>
+</div>
+</div>
+</div>
+
+
