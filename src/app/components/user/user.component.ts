@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { User } from '../../models/user';
 
 @Component({
-  selector: 'app-user',
+  selector: 'user',
   imports: [],
   templateUrl: './user.component.html'
 })
