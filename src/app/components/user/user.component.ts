@@ -1,6 +1,6 @@
 import { Component, EventEmitter} from '@angular/core';
 import { User } from '../../models/user';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 @Component({
   selector: 'user',
@@ -16,6 +16,10 @@ export class UserComponent {
   idUserEventEmitter: EventEmitter<number> = new EventEmitter();
 
   selectedUserEventEmitter: EventEmitter<User> = new EventEmitter();
+
+  constructor(private router: Router) {
+    this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
+  }
 
   selectedUser(user: User): void {
     this.selectedUserEventEmitter.emit(user);
