@@ -83,8 +83,8 @@ export class UserAppComponent implements OnInit {
     })
   }
 
-  selectedUser(userRow: User): void {
-    this.userSelected = { ...userRow };
+  selectedUser(): void {
+    this.sharingData.selectedUserEventEmitter.subscribe( userRow => this.userSelected = { ...userRow });
   }
 
   
