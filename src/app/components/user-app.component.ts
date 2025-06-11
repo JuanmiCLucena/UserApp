@@ -4,7 +4,7 @@ import { UserService } from '../services/user.service';
 import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import Swal from 'sweetalert2';
-import { RouterOutlet } from '@angular/router';
+import { Router, RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SharingDataService } from '../services/sharing-data.service';
 
@@ -18,17 +18,13 @@ export class UserAppComponent implements OnInit {
 
   users: User[] = [];
 
-  userSelected: User;
-
-  constructor(private service: UserService, private sharingData: SharingDataService) {
-    this.userSelected = new User();
+  constructor(private service: UserService, private sharingData: SharingDataService, private router: Router) {
   }
 
   ngOnInit(): void {
     this.service.findAll().subscribe(users => this.users = users);
     this.addUser();
     this.removeUser();
-    this.selectedUser();
   }
 
   addUser() {
@@ -56,8 +52,7 @@ export class UserAppComponent implements OnInit {
         icon: "success"
       });
   
-      // Limpiamos el userSelected
-      this.userSelected = new User();
+      this.router.navigate(['/users'], { state: {users: this.users} });
     })
   }
 
@@ -74,7 +69,15 @@ export class UserAppComponent implements OnInit {
         confirmButtonText: "Yes, delete it!"
       }).then((result) => {
         if (result.isConfirmed) {
+
           this.users = this.users.filter(user => user.id != id);
+
+          // Necesitamos navegar a una página distinta a la que estamos y luego volver
+          // y así refrescamos el estado
+          this.router.navigate(['/users/create'], {skipLocationChange: true}).then( () => {
+            this.router.navigate(['/users'], { state: {users: this.users} });
+          } )
+
           Swal.fire({
             title: "Deleted!",
             text: "Your user has been deleted.",
@@ -84,10 +87,5 @@ export class UserAppComponent implements OnInit {
       });
     })
   }
-
-  selectedUser(): void {
-    this.sharingData.selectedUserEventEmitter.subscribe( userRow => this.userSelected = { ...userRow });
-  }
-
   
 }
