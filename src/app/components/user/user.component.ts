@@ -2,6 +2,7 @@ import { Component, EventEmitter} from '@angular/core';
 import { User } from '../../models/user';
 import { Router, RouterModule } from '@angular/router';
 import { UserService } from '../../services/user.service';
+import { SharingDataService } from '../../services/sharing-data.service';
 
 @Component({
   selector: 'user',
@@ -14,11 +15,9 @@ export class UserComponent {
 
   users: User[] = [];
 
-  idUserEventEmitter: EventEmitter<number> = new EventEmitter();
+  
 
-  selectedUserEventEmitter: EventEmitter<User> = new EventEmitter();
-
-  constructor(private router: Router, private service: UserService) {
+  constructor(private router: Router, private service: UserService, private sharingData: SharingDataService) {
 
     if(this.router.getCurrentNavigation()?.extras.state) {
       this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
@@ -29,11 +28,11 @@ export class UserComponent {
   }
 
   selectedUser(user: User): void {
-    this.selectedUserEventEmitter.emit(user);
+    this.sharingData.selectedUserEventEmitter.emit(user);
   }
 
   removeUser(id: number): void {
-    this.idUserEventEmitter.emit(id);
+    this.sharingData.idUserEventEmitter.emit(id);
   }
 
 }
