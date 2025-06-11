@@ -4,16 +4,16 @@ import { UserService } from '../services/user.service';
 import { UserComponent } from './user/user.component';
 import { UserFormComponent } from './user-form/user-form.component';
 import Swal from 'sweetalert2';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'user-app',
-  imports: [UserComponent, UserFormComponent],
+  imports: [UserComponent, UserFormComponent, RouterOutlet],
   templateUrl: './user-app.component.html',
   styleUrls: ['./user-app.component.css']
 })
 export class UserAppComponent implements OnInit {
 
-  title: string = 'Listado de usuarios!';
 
   users: User[] = [];
 

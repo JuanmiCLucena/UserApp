@@ -8,6 +8,8 @@ import { User } from '../../models/user';
 })
 export class UserComponent {
 
+  title: string = 'Listado de usuarios!';
+
   @Input() users: User[] = [];
 
   @Output() idUserEventEmitter: EventEmitter<number> = new EventEmitter();
