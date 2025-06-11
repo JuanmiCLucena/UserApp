@@ -57,32 +57,30 @@ export class UserAppComponent implements OnInit {
       // Limpiamos el userSelected
       this.userSelected = new User();
     })
-
-
   }
 
-  removeUser(id: number) {
+  removeUser() {
 
-    Swal.fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        this.users = this.users.filter(user => user.id != id);
-        Swal.fire({
-          title: "Deleted!",
-          text: "Your user has been deleted.",
-          icon: "success"
-        });
-      }
-    });
-
-    
+    this.sharingData.idUserEventEmitter.subscribe( id => {
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!"
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.users = this.users.filter(user => user.id != id);
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your user has been deleted.",
+            icon: "success"
+          });
+        }
+      });
+    })
   }
 
   selectedUser(userRow: User): void {
