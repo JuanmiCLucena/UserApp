@@ -1,6 +1,7 @@
 import { Component, EventEmitter} from '@angular/core';
 import { User } from '../../models/user';
 import { Router, RouterModule } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'user',
@@ -17,8 +18,14 @@ export class UserComponent {
 
   selectedUserEventEmitter: EventEmitter<User> = new EventEmitter();
 
-  constructor(private router: Router) {
-    this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
+  constructor(private router: Router, private service: UserService) {
+
+    if(this.router.getCurrentNavigation()?.extras.state) {
+      this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
+    } else {
+      this.service.findAll().subscribe(users => this.users = users);
+    }
+
   }
 
   selectedUser(user: User): void {
