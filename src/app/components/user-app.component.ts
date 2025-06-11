@@ -15,12 +15,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 })
 export class UserAppComponent implements OnInit {
 
-
   users: User[] = [];
 
   userSelected: User;
-
-  open: boolean = false;
 
   constructor(private service: UserService) {
     this.userSelected = new User();
@@ -56,8 +53,6 @@ export class UserAppComponent implements OnInit {
     // Limpiamos el userSelected
     this.userSelected = new User();
 
-    this.setOpen();
-
   }
 
   removeUser(id: number) {
@@ -86,14 +81,7 @@ export class UserAppComponent implements OnInit {
 
   selectedUser(userRow: User): void {
     this.userSelected = { ...userRow };
-    this.open = true;
   }
 
-  // Switch de open (abrir/cerrar modal)
-  setOpen() {
-    this.open = !this.open;
-    // Reseteamos el usuario seleccionado al abrir/cerrar la modal
-    this.userSelected = new User();
-  }
-
+  
 }
