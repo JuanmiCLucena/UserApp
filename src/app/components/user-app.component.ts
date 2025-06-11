@@ -27,6 +27,8 @@ export class UserAppComponent implements OnInit {
   ngOnInit(): void {
     this.service.findAll().subscribe(users => this.users = users);
     this.addUser();
+    this.removeUser();
+    this.selectedUser();
   }
 
   addUser() {
