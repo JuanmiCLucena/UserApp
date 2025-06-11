@@ -6,6 +6,7 @@ import { UserFormComponent } from './user-form/user-form.component';
 import Swal from 'sweetalert2';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './navbar/navbar.component';
+import { SharingDataService } from '../services/sharing-data.service';
 
 @Component({
   selector: 'user-app',
@@ -19,39 +20,44 @@ export class UserAppComponent implements OnInit {
 
   userSelected: User;
 
-  constructor(private service: UserService) {
+  constructor(private service: UserService, private sharingData: SharingDataService) {
     this.userSelected = new User();
   }
 
   ngOnInit(): void {
     this.service.findAll().subscribe(users => this.users = users);
+    this.addUser();
   }
 
-  addUser(user: User) {
-    if (user.id > 0) {
-      // Si existe lo actualizamos
-      this.users = this.users.map(u => {
-        // Si encontramos el usuario
-        if (u.id === user.id) {
-          // Devolvemos el usuario con los datos actualizados
-          return { ...user };
-        }
-        // Si no lo encuentra devolvemos el usuario sin modificar
-        return u;
-      })
-    } else {
-      // Si no existe lo añadimos
-      this.users = [... this.users, { ...user, id: new Date().getTime() }];
-    }
+  addUser() {
 
-    Swal.fire({
-      title: "Good job!",
-      text: "User saved successfuly",
-      icon: "success"
-    });
+    this.sharingData.newUserEventEmitter.subscribe( user => {
+      if (user.id > 0) {
+        // Si existe lo actualizamos
+        this.users = this.users.map(u => {
+          // Si encontramos el usuario
+          if (u.id === user.id) {
+            // Devolvemos el usuario con los datos actualizados
+            return { ...user };
+          }
+          // Si no lo encuentra devolvemos el usuario sin modificar
+          return u;
+        })
+      } else {
+        // Si no existe lo añadimos
+        this.users = [... this.users, { ...user, id: new Date().getTime() }];
+      }
+  
+      Swal.fire({
+        title: "Good job!",
+        text: "User saved successfuly",
+        icon: "success"
+      });
+  
+      // Limpiamos el userSelected
+      this.userSelected = new User();
+    })
 
-    // Limpiamos el userSelected
-    this.userSelected = new User();
 
   }
 
