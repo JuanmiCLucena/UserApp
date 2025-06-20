@@ -17,10 +17,19 @@ export class UserComponent implements OnInit{
 
   
 
-  constructor(private router: Router, private service: UserService, private sharingData: SharingDataService) {}
+  constructor(private router: Router, private service: UserService, private sharingData: SharingDataService) {
+    // Comprobamos si en la actual navegación existe el state
+    // y si tenemos los users en el state los asignamos al estado del componente
+    if(this.router.getCurrentNavigation()?.extras.state) {
+      this.users = this.router.getCurrentNavigation()?.extras.state!['users'];
+    }
+  }
 
   ngOnInit(): void {
-     this.service.findAll().subscribe(users => this.users = users);
+    // Si el state no contiene usuarios entonces los buscamos en el backend
+    if(this.users == undefined || this.users == null ||  this.users.length == 0) {
+      this.service.findAll().subscribe(users => this.users = users);
+    }
   }
 
   selectedUser(user: User): void {

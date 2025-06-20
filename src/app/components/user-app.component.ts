@@ -54,16 +54,18 @@ export class UserAppComponent implements OnInit {
             // Si no lo encuentra devolvemos el usuario sin modificar
             return u;
           })
+          this.router.navigate(['/users'], { state: {users: this.users }});
         })
 
       } else {
         // Si no existe lo añadimos
         this.service.create(user).subscribe(userNew => {
           this.users = [... this.users, { ...userNew }];
+          // Pasamos los usuarios ya actualizados a los usuarios del state
+          this.router.navigate(['/users'], { state: {users: this.users }});
         })
       }
       
-      this.router.navigate(['/users']);
       
       Swal.fire({
         title: "Good job!",
@@ -95,7 +97,7 @@ export class UserAppComponent implements OnInit {
             // Necesitamos navegar a una página distinta a la que estamos y luego volver
             // y así refrescamos el estado
             this.router.navigate(['/users/create'], {skipLocationChange: true}).then( () => {
-              this.router.navigate(['/users']);
+              this.router.navigate(['/users'], { state: {users: this.users }});
             } )
           });
 
