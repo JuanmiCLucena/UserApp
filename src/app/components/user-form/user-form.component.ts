@@ -3,6 +3,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { User } from '../../models/user';
 import { SharingDataService } from '../../services/sharing-data.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'user-form',
@@ -13,14 +14,14 @@ export class UserFormComponent implements OnInit{
 
   user: User;
 
-  constructor(private sharingData: SharingDataService, private route: ActivatedRoute) {
+  constructor(private sharingData: SharingDataService, private route: ActivatedRoute, private service: UserService) {
     this.user = new User();
   }
 
   ngOnInit(): void {
 
     // Evento que espera el retorno del usuario que buscamos por id con el evento 'findUserByIdEventEmitter'
-    this.sharingData.selectUserEventEmitter.subscribe( user => this.user = user);
+    // this.sharingData.selectUserEventEmitter.subscribe( user => this.user = user);
 
 
     // Obtenemos los parametros asociados a la ruta específica.
@@ -31,7 +32,9 @@ export class UserFormComponent implements OnInit{
       const id: number = +(params.get('id') || '0');
 
       if(id > 0) {
-        this.sharingData.findUserByIdEventEmitter.emit(id);
+        // this.sharingData.findUserByIdEventEmitter.emit(id);
+        // Lo traemos desde el backend
+        this.service.findById(id).subscribe(user => this.user = user);
       }
     } )
   }
