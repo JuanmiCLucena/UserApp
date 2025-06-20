@@ -21,7 +21,7 @@ export class UserFormComponent implements OnInit{
   ngOnInit(): void {
 
     // Evento que espera el retorno del usuario que buscamos por id con el evento 'findUserByIdEventEmitter'
-    // this.sharingData.selectUserEventEmitter.subscribe( user => this.user = user);
+    this.sharingData.selectUserEventEmitter.subscribe( user => this.user = user);
 
 
     // Obtenemos los parametros asociados a la ruta específica.
@@ -32,9 +32,9 @@ export class UserFormComponent implements OnInit{
       const id: number = +(params.get('id') || '0');
 
       if(id > 0) {
-        // this.sharingData.findUserByIdEventEmitter.emit(id);
+        this.sharingData.findUserByIdEventEmitter.emit(id);
         // Lo traemos desde el backend
-        this.service.findById(id).subscribe(user => this.user = user);
+        // this.service.findById(id).subscribe(user => this.user = user);
       }
     } )
   }

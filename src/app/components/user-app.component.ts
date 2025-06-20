@@ -42,28 +42,35 @@ export class UserAppComponent implements OnInit {
 
     this.sharingData.newUserEventEmitter.subscribe( user => {
       if (user.id > 0) {
-        // Si existe lo actualizamos
-        this.users = this.users.map(u => {
-          // Si encontramos el usuario
-          if (u.id === user.id) {
-            // Devolvemos el usuario con los datos actualizados
-            return { ...user };
-          }
-          // Si no lo encuentra devolvemos el usuario sin modificar
-          return u;
+
+        this.service.update(user).subscribe(userUpdated => {
+          // Si existe lo actualizamos
+          this.users = this.users.map(u => {
+            // Si encontramos el usuario
+            if (u.id === userUpdated.id) {
+              // Devolvemos el usuario con los datos actualizados
+              return { ...userUpdated };
+            }
+            // Si no lo encuentra devolvemos el usuario sin modificar
+            return u;
+          })
         })
+
       } else {
         // Si no existe lo añadimos
-        this.users = [... this.users, { ...user, id: new Date().getTime() }];
+        this.service.create(user).subscribe(userNew => {
+          this.users = [... this.users, { ...userNew }];
+        })
       }
-  
+      
+      this.router.navigate(['/users']);
+      
       Swal.fire({
         title: "Good job!",
         text: "User saved successfuly",
         icon: "success"
       });
   
-      this.router.navigate(['/users'], { state: {users: this.users} });
     })
   }
 
