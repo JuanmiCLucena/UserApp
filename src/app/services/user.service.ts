@@ -15,8 +15,12 @@ export class UserService {
   findAll(): Observable<User[]> {
     // return of(this.users);
     // LLamada a backend y mapeamos la data a un arreglo de User
-    return  this.http.get('http://localhost:8080/api/users').pipe(
-      map(users => users as User[])
-    );
+    
+    // return  this.http.get('http://localhost:8080/api/users').pipe(
+    //   map(users => users as User[])
+    // );
+
+    // Más fácil
+    return this.http.get<User[]>('http://localhost:8080/api/users');
   }
 }
