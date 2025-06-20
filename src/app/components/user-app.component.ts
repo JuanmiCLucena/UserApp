@@ -88,13 +88,16 @@ export class UserAppComponent implements OnInit {
       }).then((result) => {
         if (result.isConfirmed) {
 
-          this.users = this.users.filter(user => user.id != id);
+          this.service.delete(id).subscribe( () => {
 
-          // Necesitamos navegar a una página distinta a la que estamos y luego volver
-          // y así refrescamos el estado
-          this.router.navigate(['/users/create'], {skipLocationChange: true}).then( () => {
-            this.router.navigate(['/users'], { state: {users: this.users} });
-          } )
+            this.users = this.users.filter(user => user.id != id);
+  
+            // Necesitamos navegar a una página distinta a la que estamos y luego volver
+            // y así refrescamos el estado
+            this.router.navigate(['/users/create'], {skipLocationChange: true}).then( () => {
+              this.router.navigate(['/users']);
+            } )
+          });
 
           Swal.fire({
             title: "Deleted!",
